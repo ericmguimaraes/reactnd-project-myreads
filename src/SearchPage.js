@@ -1,8 +1,38 @@
 import React from 'react'
 import './App.css'
 import {Link} from "react-router-dom";
+import * as BooksAPI from "./BooksAPI";
+import Book from "./Book";
 
 class SearchPage extends React.Component {
+    state = {
+        searchedBooks: []
+    }
+
+    handleInputChange = event => {
+        this.search(event.target.value)
+    };
+
+    search = (query) => {
+        if (!query || query==="") {
+            this.setState({
+                searchedBooks: []
+            })
+            return
+        }
+        BooksAPI.search(query).then(books => {
+            const searchedBooksWithShelf = Array.isArray(books) ? books.map(b => {
+                const myBook = this.props.books.find(myBook => b.id === myBook.id)
+                b.shelf = myBook ? myBook.shelf : "none"
+                return b
+            }) : []
+
+            this.setState({
+                searchedBooks: searchedBooksWithShelf
+            })
+        })
+    }
+
     render() {
         return (<div className="search-books">
             <div className="search-books-bar">
@@ -16,12 +46,27 @@ class SearchPage extends React.Component {
                   However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
                   you don't find a specific author or title. Every search is limited by search terms.
                 */}
-                    <input type="text" placeholder="Search by title or author"/>
+                    <input
+                        type="text"
+                        placeholder="Search by title or author"
+                        onChange={this.handleInputChange}
+                    />
 
                 </div>
             </div>
             <div className="search-books-results">
-                <ol className="books-grid"></ol>
+                <ol className="books-grid">
+                    {
+                        this.state.searchedBooks && this.state.searchedBooks.map(book =>
+                            (<li key={book.id}>
+                                <Book
+                                    book={book}
+                                    onUpdate={(book, shelf) => this.props.onUpdate(book, shelf)}
+                                />
+                            </li>)
+                        )
+                    }
+                </ol>
             </div>
         </div>)
     }

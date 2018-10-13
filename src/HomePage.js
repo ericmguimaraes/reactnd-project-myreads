@@ -5,7 +5,6 @@ import BookShelf from "./BookShelf";
 
 class HomePage extends React.Component {
     render() {
-        console.log(this.props.books)
         return (<div className="list-books">
             <div className="list-books-title">
                 <h1>MyReads</h1>
