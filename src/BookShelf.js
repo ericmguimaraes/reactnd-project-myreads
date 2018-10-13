@@ -10,7 +10,10 @@ class BookShelf extends React.Component {
                     {
                         this.props.books && this.props.books.filter(b => b.shelf === this.props.shelf).map(book =>
                             (<li key={book.id}>
-                                <Book book={book}/>
+                                <Book
+                                    book={book}
+                                    onUpdate={(book, shelf) => this.props.onUpdate(book, shelf)}
+                                />
                             </li>)
                         )
                     }

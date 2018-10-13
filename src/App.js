@@ -13,6 +13,19 @@ class BooksApp extends React.Component {
         })
     }
 
+    onUpdate = (book, shelf) => {
+        BooksAPI.update(book, shelf).then(() => {
+            this.setState((currentState) =>
+                currentState.books.map((b) => {
+                    if (b.id === book.id) {
+                        b.shelf = shelf
+                    }
+                    return true
+                })
+            )
+        })
+    }
+
     state = {
         books: []
     }
@@ -22,7 +35,8 @@ class BooksApp extends React.Component {
             <Switch>
                 <Route exact path="/"
                        render={
-                           () => <HomePage books={this.state.books}/>
+                           () => <HomePage books={this.state.books}
+                                           onUpdate={(book, shelf) => this.onUpdate(book, shelf)}/>
                        }
                 />
                 <Route path="/search" render={

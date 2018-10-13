@@ -1,9 +1,14 @@
 import React from "react";
 
 class Book extends React.Component {
+
+    onChange = (event) => {
+        this.props.onUpdate(this.props.book, event.target.value)
+    }
+
     render() {
-        const { title, subtitle, imageLinks, shelf } = this.props.book
-        const { thumbnail } = imageLinks
+        const { title, authors, imageLinks, shelf } = this.props.book
+        const thumbnail = imageLinks && imageLinks.thumbnail
         return (<div className="book">
             <div className="book-top">
                 <div className="book-cover" style={{
@@ -12,7 +17,7 @@ class Book extends React.Component {
                     backgroundImage: `url(${thumbnail})`
                 }}></div>
                 <div className="book-shelf-changer">
-                    <select defaultValue={shelf}>
+                    <select defaultValue={shelf} onChange={this.onChange}>
                         <option  value="move" disabled>Move to...</option>
                         <option value="currentlyReading">Currently Reading</option>
                         <option value="wantToRead">Want to Read</option>
@@ -22,7 +27,7 @@ class Book extends React.Component {
                 </div>
             </div>
             <div className="book-title">{title}</div>
-            <div className="book-authors">{subtitle}</div>
+            <div className="book-authors">{authors && authors.join(", ")}</div>
         </div>)
     }
 }

@@ -15,14 +15,17 @@ class HomePage extends React.Component {
                     <BookShelf
                         title={"Currently Reading"}
                         shelf={"currentlyReading"}
+                        onUpdate={(book, shelf) => this.props.onUpdate(book, shelf)}
                         books={this.props.books}/>
                     <BookShelf
                         title={"Want to Read"}
                         shelf={"wantToRead"}
+                        onUpdate={(book, shelf) => this.props.onUpdate(book, shelf)}
                         books={this.props.books}/>
                     <BookShelf
                         title={"Read"}
                         shelf={"read"}
+                        onUpdate={(book, shelf) => this.props.onUpdate(book, shelf)}
                         books={this.props.books}/>
                 </div>
             </div>
